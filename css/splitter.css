@@ -1,0 +1,46 @@
+.splitterObject {
+  transition: all 400ms;
+}
+
+.splitterObject:hover {
+  transform: scale(1.01);
+}
+
+.splitter_anim {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  z-index: 1;
+}
+
+/* Rotated and moved by javascript/splitter.js */
+.splitter1,
+.splitter2,
+.splitter3 {
+  height: max(6vw, 6rem);
+  width: auto;
+  position: absolute;
+
+  filter: drop-shadow(var(--shadow));
+}
+
+.splitter1 {
+  top: -10rem;
+  left: 90%;
+}
+
+.splitter2 {
+  top: 0;
+  left: 110%;
+}
+
+.splitter3 {
+  bottom: min(-50%, -10rem);
+  left: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splitterObject {
+    transition: none;
+  }
+}

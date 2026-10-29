@@ -1,0 +1,2 @@
+# Only loaded by mailer.php from disk, never requested directly
+Require all denied

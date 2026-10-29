@@ -1,0 +1,77 @@
+DirectoryIndex index.php
+
+# Largest accepted request body (the contact form needs a few KB)
+LimitRequestBody 102400
+
+ErrorDocument 403 "Zugriff verweigert."
+
+# Project notes and the local development router are not part of the site
+<FilesMatch "^(CLAUDE\.md|dev-router\.php)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    # Block some spam bots and aggressive crawlers
+    RewriteCond %{HTTP_USER_AGENT} (libwww-perl|MJ12bot|AhrefsBot) [NC]
+    RewriteRule ^ - [F,L]
+
+    # /index, /index.php and /index.html are the start page
+    RewriteCond %{THE_REQUEST} \s/+index(\.php|\.html)?[\s?] [NC]
+    RewriteRule ^ / [R=301,L]
+
+    # Old .html URLs redirect permanently to the extensionless form
+    RewriteCond %{THE_REQUEST} \s/+([^.?\s]+)\.html[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # Section URLs of the start page: index.php scrolls to the section
+    # (keep in sync with data-path in index.php and with dev-router.php)
+    RewriteRule ^(ueber-mich|projekte|kontakt)/?$ /index.php [L]
+
+    # /impressum serves impressum.php
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^ %{REQUEST_URI}.php [L]
+</IfModule>
+
+# Correct types, needed for caching and X-Content-Type-Options
+AddType font/woff2 .woff2
+AddType font/woff .woff
+AddType image/webp .webp
+AddType video/webm .webm
+AddType application/json .json
+
+# Caching. CSS, JS and popup_information.json get ?v=<modification time> from
+# includes/head.php, so a changed file gets a new URL and can be cached long.
+# Images and videos have no version: give a replaced file a new name, or
+# visitors may see the old one for up to a month.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType application/json "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType video/webm "access plus 1 month"
+</IfModule>
+
+# Compression for text formats
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/json application/javascript text/javascript image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    # Browsers ignore this over plain HTTP; over HTTPS it makes them stay on HTTPS
+    Header always set Strict-Transport-Security "max-age=31536000"
+    # Everything is self-hosted. Inline styles exist (style="..." attributes), inline scripts don't.
+    # New external sources (fonts, scripts, embeds) must be added here.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+</IfModule>

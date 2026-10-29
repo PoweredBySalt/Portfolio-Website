@@ -1,0 +1,268 @@
+[
+  {
+    "name": "Limondo",
+    "short_description": "Erstellung einer fiktiven Limo",
+    "description": "Im Rahmen meiner Ausbildung bekam ich die Aufgabe, eine Wort-Marke und ein Etikett für die fiktive Limonade „Limondo“ von Paulaner zu entwickeln. Basierend darauf habe ich ein Plakat und einen Instagram-Post erstellt, welche das Produkt bewerben.",
+    "worksteps": [
+      "Ideen und Referenzen sammeln",
+      "Etikett in Illustrator entwickeln",
+      "Mockup in Photoshop erstellen",
+      "Plakat in InDesign gestalten",
+      "Flasche in Blender modellieren und texturieren"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Adobe Illustrator",
+        "programm_description": "Wortmarke und Hintergrund erstellen",
+        "programm_path": "/images/SVG/logos/Illustrator.svg"
+      },
+      {
+        "programm_name": "Adobe InDesign",
+        "programm_description": "Layout für Etikett und Plakat",
+        "programm_path": "/images/SVG/logos/InDesign.svg"
+      },
+      {
+        "programm_name": "Adobe Photoshop",
+        "programm_description": "Mockup Erstellung",
+        "programm_path": "/images/SVG/logos/Photoshop.svg"
+      },
+      {
+        "programm_name": "Blender",
+        "programm_description": "3D Render der Flasche",
+        "programm_path": "/images/SVG/logos/Blender.svg"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/limondo/limondo_mockup.webp",
+        "image_description": "Mockup der Limondo-Flasche mit dem gestalteten Etikett."
+      },
+      {
+        "image_path": "/images/mockups/projekte/limondo/limondo_plakat_240829_mr.webp",
+        "image_description": "Werbeplakat für die fiktive Limonade Limondo."
+      }
+    ],
+    "slider_videos": [
+      {
+        "video_path": "/videos/limondo.webm",
+        "video_description": "3D-Animation der Limondo-Flasche."
+      }
+    ]
+  },
+  {
+    "name": "Chronometer",
+    "short_description": "Vektorisierung eines Chronometers",
+    "description": "Eine Aufgabe war es, ein Chronometer der Marke „Louis Moinet“ anhand einer Bildvorlage als Vektorgrafik nachzuzeichnen. Hierzu habe ich die einzelnen Teile erst illustriert und anschließend mithilfe von Verläufen das Gefühl von Tiefe erzeugt.",
+    "worksteps": [
+      "Referenzen suchen",
+      "Flächen erstellen",
+      "Verläufe erstellen"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Adobe Illustrator",
+        "programm_description": "Illustrieren der Uhr",
+        "programm_path": "/images/SVG/logos/Illustrator.svg"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/chronometer/chronometer.webp",
+        "image_description": "Vektorisierte Darstellung eines Louis-Moinet-Chronometers."
+      }
+    ]
+  },
+  {
+    "name": "Viva La Musica",
+    "short_description": "Logo Redesign",
+    "description": "Der Musikverein Viva La Musica in Dresden bat um Unterstützung beim Neudesign seines Logos. Ziel war es, die Verbindung zwischen Dresden und Musik herzustellen. Dabei habe ich die einzelnen Silhouetten von verschiedenen Dresdner Wahrzeichen so angeordnet, dass es wie eine Achtelnote aussieht.",
+    "worksteps": [
+      "Konzeptionierung",
+      "grobe Entwürfe konstruieren",
+      "Entwürfe nach Kundenwunsch anpassen",
+      "Mockups erstellen"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Adobe Illustrator",
+        "programm_description": "Konzeptionierung und Design",
+        "programm_path": "/images/SVG/logos/Illustrator.svg"
+      },
+      {
+        "programm_name": "Adobe Photoshop",
+        "programm_description": "Mockup Erstellung",
+        "programm_path": "/images/SVG/logos/Photoshop.svg"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/vivaLaMusica/Free_90x50mm_Business_Card_Mockup_1.webp",
+        "image_description": "Visitenkarten-Mockup mit dem Redesign des Viva-La-Musica Logos."
+      },
+      {
+        "image_path": "/images/mockups/projekte/vivaLaMusica/Element_3.webp",
+        "image_description": "Gestaltungselement aus dem Logo-Redesign für Viva-La-Musica."
+      }
+    ]
+  },
+  {
+    "name": "Autismus Dresden e.V.",
+    "short_description": "Logo Redesign",
+    "description": "Der <a href=\"https://www.autismus-dresden.org/\" target=\"_blank\" rel=\"noopener noreferrer\">Verein Autismus Dresden e.V.</a> war auf der Suche nach einer neuen Bild-Wort-Marke, mit dem Ziel, den Zusammenhang zwischen Dresden und dem Bundesverband Autismus Deutschland e.V. herzustellen.",
+    "worksteps": [
+      "Konzeptionierung",
+      "grobe Entwürfe konstruieren",
+      "Entwürfe nach Kundenwunsch anpassen",
+      "Mockups erstellen"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Adobe Illustrator",
+        "programm_description": "Konzeptionierung und Design",
+        "programm_path": "/images/SVG/logos/Illustrator.svg"
+      },
+      {
+        "programm_name": "Adobe Photoshop",
+        "programm_description": "Mockup Erstellung",
+        "programm_path": "/images/SVG/logos/Photoshop.svg"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/autismusdresden/Business_Card_Mockup_1.webp",
+        "image_description": "Visitenkarten Mockup mit dem neuen Logo für Autismus Dresden e.V."
+      }
+    ]
+  },
+  {
+    "name": "D4-VE",
+    "short_description": "3D-modellierter Roboter",
+    "description": "\"D4-VE\" oder auch Dave ist ein privates Projekt an dem ich ca. 2 Jahre gearbeitet habe. Die Idee war es, einen humanoiden Forschungsroboter zu erstellen.",
+    "worksteps": [
+      "Konzeptionierung und Referenzsuche",
+      "3D Modelling in Blender",
+      "Texturing in Substance Painter",
+      "Rigging und Animation in Blender"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Blender",
+        "programm_description": "3D Modelling, Rigging und Animation",
+        "programm_path": "/images/SVG/logos/Blender.svg"
+      },
+      {
+        "programm_name": "Adobe Substance Painter",
+        "programm_description": "Texturing und Baking",
+        "programm_path": "/images/SVG/logos/SubstancePainter.svg"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/dave/D4VE.webp",
+        "image_description": "3D-Darstellung des Forschungsroboters Dave."
+      }
+    ],
+    "slider_videos": [
+      {
+        "video_path": "/videos/dave.webm",
+        "video_description": "3D-Rennanimation des Forschungsroboters Dave."
+      }
+    ]
+  },
+  {
+    "name": "Praktikum bei adsbe",
+    "short_description": "Ansammlung von Projekten",
+    "description": "Während meines Praktikums bei Adsbe GmbH hatte ich die Möglichkeit, an vielen Projekten zu arbeiten. Hauptaufgabe war das Erstellen und Bearbeiten von Instagram Posts, sowie das Bearbeiten von Flyern, Plakaten und anderen Printprodukten.",
+    "worksteps": [
+      "Erstellung von Social-Media-Posts",
+      "Erstellung von Werbevideos mit Capcut",
+      "Bearbeitung von Plakaten, Bannern und Falzprospekten"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Adobe Illustrator",
+        "programm_description": "Instagram Post Erstellung",
+        "programm_path": "/images/SVG/logos/Illustrator.svg"
+      },
+      {
+        "programm_name": "Adobe Photoshop",
+        "programm_description": "Bildretusche und Bearbeitung",
+        "programm_path": "/images/SVG/logos/Photoshop.svg"
+      },
+      {
+        "programm_name": "Capcut",
+        "programm_description": "Instagram Post Animation und Schnitt",
+        "programm_path": "/images/SVG/logos/Capcut.svg"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/adsbe/holi.webp",
+        "image_description": "Werbebanner für das Holi-Festival des Millenium Event Centers."
+      },
+      {
+        "image_path": "/images/mockups/projekte/adsbe/seefest.webp",
+        "image_description": "Werbebanner für das Seefest am Wolfsburg Allersee."
+      }
+    ],
+    "slider_videos": [
+      {
+        "video_path": "/videos/velocity.webm",
+        "video_description": "Werbevideo für Velocity Automotive."
+      },
+      {
+        "video_path": "/videos/saintwhoo.webm",
+        "video_description": "Werbevideo für das Saintwhoo Festival."
+      }
+    ]
+  },
+  {
+    "name": "Portfolio Website",
+    "short_description": "Front- und Backend-Programmierung",
+    "description": "Mein Portfolio habe ich selbst programmiert ohne Hilfe außenstehender Tools oder Hilfsmittel. Ziel war es, eine Auswahl meiner Arbeiten zu präsentieren und einen guten ersten Eindruck zu hinterlassen.",
+    "worksteps": [
+      "Konzeptionierung",
+      "HTML Grundgerüst schreiben",
+      "Gestaltung mit CSS",
+      "Animation und Slider mit JavaScript programmieren"
+    ],
+    "used_software": [
+      {
+        "programm_name": "Adobe Illustrator",
+        "programm_description": "Erstellung von Icons und anderen Designelementen",
+        "programm_path": "/images/SVG/logos/Illustrator.svg"
+      },
+      {
+        "programm_name": "Adobe Photoshop",
+        "programm_description": "Mockup Kreation",
+        "programm_path": "/images/SVG/logos/Photoshop.svg"
+      },
+      {
+        "programm_name": "HTML",
+        "programm_description": "Grundgerüst der Website",
+        "programm_path": "/images/SVG/logos/HTML.svg"
+      },
+      {
+        "programm_name": "CSS",
+        "programm_description": "Grundlegendes Design",
+        "programm_path": "/images/SVG/logos/CSS.svg"
+      },
+      {
+        "programm_name": "JavaScript",
+        "programm_description": "Interaktivität und Animationen",
+        "programm_path": "/images/SVG/logos/JavaScript.svg"
+      },
+      {
+        "programm_name": "PHP",
+        "programm_description": "Kontaktformular",
+        "programm_path": "/images/php.webp"
+      }
+    ],
+    "slider_images": [
+      {
+        "image_path": "/images/mockups/projekte/website/macbookMockup.webp",
+        "image_description": "Mockup der Portfolio-Website auf einem Laptop."
+      }
+    ]
+  }
+]

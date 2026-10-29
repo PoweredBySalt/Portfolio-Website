@@ -1,0 +1,52 @@
+section {
+  min-height: 100vh;
+  height: fit-content;
+  width: clamp(20rem, 100%, 65rem);
+  padding: 10rem 8vw;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  word-break: break-word;
+  width: fit-content;
+  margin-bottom: 2rem;
+  text-align: left;
+
+  &:after {
+    content: "";
+    display: block;
+    position: relative;
+    bottom: 0.1em;
+    width: var(--underline-w);
+    height: 0.2em;
+    background-color: var(--zblau);
+  }
+}
+
+h2 {
+  margin: 2rem 0 1rem;
+}
+
+h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+h4 {
+  margin: 1rem 0 0.2rem;
+}
+
+main a {
+  text-decoration: underline solid;
+  color: var(--zblau);
+
+  &:hover {
+    color: var(--xrot_dunkel);
+  }
+}
+
+footer {
+  h3,
+  h4 {
+    margin: 0;
+  }
+}
