@@ -8,10 +8,19 @@
   const status = document.getElementById("contact-status");
   if (!form || !status) return;
   const submitButton = form.querySelector('[type="submit"]');
+  const buttonText = submitButton.textContent;
+
+  // Shows an error and moves focus to it, so keyboard and screen reader users
+  // (and small screens, where it sits below the fold) notice it.
+  function showError(message) {
+    status.textContent = message;
+    status.focus();
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     submitButton.disabled = true;
+    submitButton.textContent = "Wird gesendet…";
     status.textContent = "";
 
     try {
@@ -25,11 +34,12 @@
         window.location.href = "/sent";
         return;
       }
-      status.textContent = result.message || FALLBACK_MESSAGE;
+      showError(result.message || FALLBACK_MESSAGE);
     } catch (error) {
       console.error(error);
-      status.textContent = FALLBACK_MESSAGE;
+      showError(FALLBACK_MESSAGE);
     }
     submitButton.disabled = false;
+    submitButton.textContent = buttonText;
   });
 })();

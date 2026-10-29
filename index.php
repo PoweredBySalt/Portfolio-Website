@@ -457,8 +457,9 @@ unset($form_config);
           </p>
           <!-- maxlength values match FIELDS in mailer.php -->
           <form action="/mailer.php" id="contactForm" method="POST">
+            <p class="required_note">* Pflichtfeld</p>
             <div class="field">
-              <label for="contact-name">Vorname</label>
+              <label for="contact-name">Vorname <span class="required" aria-hidden="true">*</span></label>
               <input
                 type="text"
                 name="name"
@@ -469,7 +470,7 @@ unset($form_config);
               />
             </div>
             <div class="field">
-              <label for="contact-nachname">Nachname</label>
+              <label for="contact-nachname">Nachname <span class="required" aria-hidden="true">*</span></label>
               <input
                 type="text"
                 name="nachname"
@@ -490,7 +491,7 @@ unset($form_config);
               />
             </div>
             <div class="field field_wide">
-              <label for="contact-email">E-Mail</label>
+              <label for="contact-email">E-Mail <span class="required" aria-hidden="true">*</span></label>
               <input
                 type="email"
                 name="email"
@@ -501,7 +502,7 @@ unset($form_config);
               />
             </div>
             <div class="field field_wide">
-              <label for="contact-betreff">Betreff</label>
+              <label for="contact-betreff">Betreff <span class="required" aria-hidden="true">*</span></label>
               <input
                 type="text"
                 name="betreff"
@@ -511,7 +512,7 @@ unset($form_config);
               />
             </div>
             <div class="field field_wide">
-              <label for="contact-nachricht">Ihre Nachricht</label>
+              <label for="contact-nachricht">Ihre Nachricht <span class="required" aria-hidden="true">*</span></label>
               <textarea
                 name="nachricht"
                 id="contact-nachricht"
@@ -539,13 +540,13 @@ unset($form_config);
                 <label id="datenschutz" for="contact-dse">
                   Ich habe die
                   <a class="link" href="/datenschutz">Datenschutzerklärung</a>
-                  zur Kenntnis genommen.
+                  zur Kenntnis genommen. <span class="required" aria-hidden="true">*</span>
                 </label>
               </div>
+              <p id="contact-status" role="alert" tabindex="-1"><?= e($contact_message) ?></p>
               <button class="button" type="submit">Senden</button>
             </fieldset>
           </form>
-          <p id="contact-status" role="status"><?= e($contact_message) ?></p>
         </div>
         <img
           src="/images/Dave_decoration.webp"

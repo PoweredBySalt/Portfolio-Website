@@ -739,7 +739,7 @@ nav {
   > div {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-gap: 4vw;
+    grid-gap: 3rem;
   }
 }
 
@@ -794,8 +794,8 @@ nav {
 
   .contact_links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem 1.5rem;
+    flex-direction: column;
+    gap: 0.3rem;
     margin: 0.5rem 0 1.5rem;
     font-size: 1.2rem;
     font-weight: 900;
@@ -820,6 +820,11 @@ nav {
   .field label {
     font-size: 1rem;
     font-weight: bold;
+  }
+
+  .required_note {
+    grid-column: 1 / 3;
+    font-size: 0.9rem;
   }
 
   a {
@@ -880,8 +885,13 @@ textarea:focus-visible {
 }
 
 textarea {
-  height: 10rem;
-  resize: none;
+  height: 12rem;
+  min-height: 10rem;
+  resize: vertical;
+}
+
+#contact form {
+  max-width: 40rem;
 }
 
 fieldset {
@@ -919,10 +929,15 @@ fieldset {
 }
 
 #contact-status {
-  margin-top: var(--padding_small);
-  max-width: 80vw;
+  max-width: 40rem;
+  padding-left: 0.8rem;
+  border-left: 0.3rem solid var(--xrot_dunkel);
   color: var(--xrot_dunkel);
   font-weight: 900;
+
+  &:focus {
+    outline: none;
+  }
 
   &:empty {
     display: none;
@@ -1284,10 +1299,6 @@ footer {
     }
   }
 
-  #contact img {
-    display: none;
-  }
-
   #project_description {
     gap: 0;
     grid-template-columns: 1fr;
@@ -1404,15 +1415,15 @@ footer {
       filter: drop-shadow(var(--shadow));
     }
   }
+
+  #contact img {
+    display: none;
+  }
 }
 
 @media (max-width: 900px) {
   #contact {
     justify-content: stretch;
-  }
-
-  #projects > div {
-    grid-gap: 10vw;
   }
 
   form {

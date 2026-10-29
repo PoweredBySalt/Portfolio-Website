@@ -56,32 +56,43 @@ function finish($status, $http_code = 200)
 // only stored as a keyed hash ($secret stays in config.php, so it can't be
 // brute-forced), in the server's temp folder. Files older than the window are
 // deleted. If the folder cannot be written, nobody is blocked.
+function rate_limit_file($ip, $secret)
+{
+    return sys_get_temp_dir() . "/kontakt_" . hash_hmac("sha256", $ip, $secret) . ".json";
+}
+
+// Timestamps of this address's messages within the window.
+function recent_sends($ip, $secret)
+{
+    $file = rate_limit_file($ip, $secret);
+    $times = is_file($file) ? json_decode((string) @file_get_contents($file), true) : [];
+    $now = time();
+
+    return array_values(array_filter(
+        is_array($times) ? $times : [],
+        fn($time) => is_int($time) && $now - $time < RATE_LIMIT_WINDOW
+    ));
+}
+
 function is_rate_limited($ip, $secret)
 {
     $now = time();
-    $folder = sys_get_temp_dir();
 
-    foreach (glob($folder . "/kontakt_*.json") ?: [] as $old_file) {
+    foreach (glob(sys_get_temp_dir() . "/kontakt_*.json") ?: [] as $old_file) {
         if ($now - (int) @filemtime($old_file) > RATE_LIMIT_WINDOW) {
             @unlink($old_file);
         }
     }
 
-    $file = $folder . "/kontakt_" . hash_hmac("sha256", $ip, $secret) . ".json";
+    return count(recent_sends($ip, $secret)) >= RATE_LIMIT_COUNT;
+}
 
-    $times = is_file($file) ? json_decode((string) @file_get_contents($file), true) : [];
-    $times = array_filter(
-        is_array($times) ? $times : [],
-        fn($time) => is_int($time) && $now - $time < RATE_LIMIT_WINDOW
-    );
-
-    if (count($times) >= RATE_LIMIT_COUNT) {
-        return true;
-    }
-
-    $times[] = $now;
-    @file_put_contents($file, json_encode(array_values($times)), LOCK_EX);
-    return false;
+// Called after a successful send, so failed SMTP attempts don't use up the limit.
+function record_send($ip, $secret)
+{
+    $times = recent_sends($ip, $secret);
+    $times[] = time();
+    @file_put_contents(rate_limit_file($ip, $secret), json_encode($times), LOCK_EX);
 }
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -128,7 +139,8 @@ foreach (FIELDS as $field => $max_length) {
     if (!is_string($value)) {
         finish("eingabe", 422);
     }
-    $value = trim($value);
+    // Browsers submit line breaks as \r\n but count them as one character in maxlength
+    $value = trim(str_replace(["\r\n", "\r"], "\n", $value));
     $is_missing = $value === "" && !in_array($field, OPTIONAL_FIELDS, true);
     if ($is_missing || mb_strlen($value) > $max_length) {
         finish("eingabe", 422);
@@ -140,7 +152,8 @@ if (!filter_var($values["email"], FILTER_VALIDATE_EMAIL) || ($_POST["dse"] ?? ""
     finish("eingabe", 422);
 }
 
-if (is_rate_limited($_SERVER["REMOTE_ADDR"] ?? "", $config["smtp_password"])) {
+$ip = $_SERVER["REMOTE_ADDR"] ?? "";
+if (is_rate_limited($ip, $config["smtp_password"])) {
     finish("zu_viele", 429);
 }
 
@@ -189,4 +202,5 @@ try {
     finish("fehler", 500);
 }
 
+record_send($ip, $config["smtp_password"]);
 finish("gesendet");

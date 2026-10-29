@@ -7,7 +7,7 @@ Personal portfolio website of Marwin Ritschel (marwin-ritschel.de): designer, 3D
 There is no build step, package manager or test suite. Files are deployed as they are.
 
 - The pages are `.php` files and need PHP; VS Code Live Server cannot render them. On the home PC PHP 8.3 is on the PATH (`C:\php8.3\php.exe`) and Git is installed, and the folder is now a git repository (branch `main`, created on the home PC; the work PC has no Git). The work PC has no PHP on the PATH and no Git; there XAMPP's PHP 8.1 is at `C:\xampp\php\php.exe`.
-- Preview with `php -S localhost:8000 dev-router.php` from this directory, then open `http://localhost:8000`. `dev-router.php` mimics the `.htaccess` rewrites (extensionless URLs, section URLs, 404s), which PHP's built-in server ignores. It does nothing outside the built-in server. It does **not** copy the access blocks, so locally `/includes/*.php`, `/CLAUDE.md` and `/PHPMailer/` are reachable (Apache denies them).
+- Preview with `php -S localhost:8000 dev-router.php` from this directory, then open `http://localhost:8000`. `dev-router.php` mimics the `.htaccess` rewrites (extensionless URLs, section URLs, 404s), which PHP's built-in server ignores. It does nothing outside the built-in server. It does **not** copy the access blocks, so locally `/includes/*.php`, and `/PHPMailer/` are reachable (Apache denies them).
 - Syntax check: `php -l <file>` (on the work PC use the full XAMPP path).
 - Headless Chrome (`"C:\Program Files\Google\Chrome\Application\chrome.exe" --headless=new`; Edge wasn't found at home, on the work PC use `msedge.exe`) can drive the page for tests. Plain `--screenshot` can't capture scrolled positions, so use the DevTools protocol (`--remote-debugging-port`) for that. Never submit a valid contact form while testing: it sends a real email.
 - On Apache, `.htaccess` sets `DirectoryIndex index.php`, maps `/impressum` to `impressum.php`, and redirects old `*.html` URLs to the extensionless form.
@@ -67,7 +67,7 @@ require __DIR__ . "/includes/head.php";
 - `sectionUrls.js` (index): makes the section URLs work. Clicks on section links scroll smoothly and `pushState` the path (no reload; back/forward use the browser's scroll restoration). Opening `/kontakt` jumps to the section, again after `load` unless the visitor has started scrolling. The address bar changes only on clicks, not while scrolling.
 - `navIndicator.js` (index): desktop nav underline that slides with GSAP to the link of the section in view (scroll spy); the mobile menu gets a static `.active` underline. It maps links to sections through `data-path`.
 - `splitter.js` (index): rotates the splitter SVGs to point away from the hero title, recalculates on load, font load and resize, and pushes them outward on hover.
-- `contact.js` (index): sends the contact form with `fetch` (asking `mailer.php` for JSON), so errors appear in `#contact-status` without losing the input. On success it goes to `/sent`.
+- `contact.js` (index): sends the contact form with `fetch` (asking `mailer.php` for JSON), so errors appear in `#contact-status` without losing the input. While sending, the button reads "Wird gesendet…". An error is shown in `#contact-status` (`role="alert"`, `tabindex="-1"`) and focus moves to it. On success it goes to `/sent`.
 - `popup.js` (index): project popup, a native `<dialog>` opened with `showModal()`, which provides focus trapping and Escape-to-close. A tile's `data-project` attribute is the index into `popup_information.json` (loaded once, cached). The script fills the header, description, worksteps and tool list, and builds an infinite slider. Only the middle (visible) slide is interactive, and only its video plays. Videos use `preload="none"`. All cleanup runs in the dialog's `close` event, however it was closed. The slider button classes are swapped: `.controll_next` is the **left** button (previous, `slide(-1)`), `.controll_prev` the right one (next); the `aria-label`s are correct.
 
 **Reduced motion.** Every animation checks `prefers-reduced-motion`: the JS animations via `matchMedia`, the CSS transitions via a block at the end of `style.css` (and of `splitter.css`). Keep this when adding animations.
@@ -110,7 +110,7 @@ require __DIR__ . "/includes/head.php";
   The section headings and the table of contents are in German.
 
   New rules go into the matching section. Media-query rules go into the existing breakpoint block, not next to the base rule. That keeps the cascade order (media rules after all base rules).
-- Breakpoints: 1440px (About stacks), 1200px, 1000px (desktop nav becomes the hamburger menu), 900px, 700px. **1200px is also hard-coded in `popup.js`** (`MOBILE_LAYOUT`), which switches the popup description to a toggle panel; keep the two in sync.
+- Breakpoints: 1440px (About stacks), 1200px, 1000px (desktop nav becomes the hamburger menu; the contact decoration image "Dave" is hidden from here down), 900px, 700px. **1200px is also hard-coded in `popup.js`** (`MOBILE_LAYOUT`), which switches the popup description to a toggle panel; keep the two in sync.
 - Keyboard focus uses `:focus-visible` (blue outline, white inside `nav` and `footer`). Text fields show focus with their blue border instead. Don't remove outlines without a replacement.
 - Only the font weights 500 and 900 of Inter exist in practice (body text renders as 500, bold as 900). Both are preloaded in `head.php`, and Quadrangle is preloaded on index only.
 - While the popup is open, `<html>` has the class `popup_open` (blocks scrolling). Safari < 16 falls back to pinning `body` with `position: fixed`.
@@ -122,8 +122,8 @@ require __DIR__ . "/includes/head.php";
 - `mailer.php` checks, in order:
   1. A filled honeypot pretends success.
   2. `form_time` must carry a valid signature (`form_sig`, HMAC with the key from `config.php`, created in `index.php`), and the form must take at least `MIN_FILL_SECONDS` to fill in. `config.php` is loaded before this check.
-  3. Required fields, the maximum lengths in `FIELDS` (keep in sync with the `maxlength` attributes), the email, and consent.
-  4. At most `RATE_LIMIT_COUNT` messages per IP per hour. Only a keyed hash (`hash_hmac`, key from `config.php`) of the IP is stored, in the server temp folder; files older than the window are deleted, and if the folder can't be written, nobody is blocked. The SMTP timeout is `SMTP_TIMEOUT` (20 s).
+  3. Required fields, the maximum lengths in `FIELDS` (keep in sync with the `maxlength` attributes; line breaks are normalised to `\n` first, because browsers count `\r\n` as one character), the email, and consent.
+  4. At most `RATE_LIMIT_COUNT` messages per IP per hour. The attempt is recorded (`record_send()`) only after the mail was sent, so failed SMTP attempts don't count. Only a keyed hash (`hash_hmac`, key from `config.php`) of the IP is stored, in the server temp folder; files older than the window are deleted, and if the folder can't be written, nobody is blocked. The SMTP timeout is `SMTP_TIMEOUT` (20 s).
 - It sends via `smtp.strato.com:465` (SMTPS) as `contact@marwin-ritschel.de`.
 - `finish()` reports the result. A request asking for JSON (from `contact.js`) gets `{status, message}`. A plain post is redirected to `/sent`, or to `/kontakt?formular=<status>`, where `index.php` shows the message from `includes/contact_messages.php`.
 - The SMTP password is read from `__DIR__ . '/../config.php'`, i.e. **one level above the web root** (locally `../config.php` next to this folder), which must `return ['smtp_password' => '...'];`. Never put credentials into any file inside the web root, and never read out or print that config file. Without it, `mailer.php` logs `Kontaktformular: config.php fehlt` and reports `fehler` (HTTP 500).
@@ -132,7 +132,7 @@ require __DIR__ . "/includes/head.php";
 ## Other files
 
 - `.htaccess` contains:
-  - `DirectoryIndex index.php`, `LimitRequestBody`, and blocking of `CLAUDE.md`, `dev-router.php` and a few bots;
+  - `DirectoryIndex index.php`, `LimitRequestBody`, and blocking of a few bots. `CLAUDE.md`, `dev-router.php` and the other dev files are not uploaded to the server, so they need no block;
   - 301 redirects (`/index*` to `/`, `*.html` to extensionless), section URLs (`/kontakt` etc.) to `index.php`, and extensionless URLs to `.php`;
   - MIME types, caching (`mod_expires`), compression (`mod_deflate`) and security headers (`nosniff`, `Referrer-Policy`, `X-Frame-Options`, HSTS, `Permissions-Policy`, `Content-Security-Policy`).
   - The CSP allows only own resources, no inline scripts, but inline `style` attributes. A new external source (font, script, embed) or an inline script needs a CSP change, or the browser blocks it. `dev-router.php` doesn't send these headers, so test the CSP on the live site (console).
@@ -160,5 +160,6 @@ Found in a full review on 2026-10-29. Delete an item once it is fixed. Bugs and 
 - The scrollbar is hidden in Chromium and Safari (`html::-webkit-scrollbar`) but still shows in Firefox.
 - There is no custom 404 page (Apache shows its default English one); `/impressum.php` also answers as a duplicate of `/impressum` (the canonical link covers it).
 - Videos have no `poster`, so a slide is blank until its video loads. The share image is WebP, which some link-preview crawlers don't support; a JPEG copy is safer.
-- Accessibility: the contact fields have no visible labels (only placeholders); the open hamburger menu doesn't trap focus or lock scrolling (it covers the screen at ≤ 700px); the hero portrait has `alt=""`; the footer logo's label "Zurück zum Anfang der Seite" is wrong on the legal pages.
-- Small JS/PHP details: `navIndicator.js` lacks `"use strict"` and uses `pageYOffset` (use `scrollY`); the slider arrow hover `scale` sits outside `@media (hover: hover)`; `FALLBACK_MESSAGE` in `contact.js` duplicates the `fehler` message without the email address.
+- Contact form ideas: split the generic `eingabe` error into specific messages (too long, expired form); let the signed `form_time` expire (e.g. after 24 h); rename the honeypot `website`, which browsers may autofill; add a character counter to the textarea; a fallback when SMTP fails so no message is lost; subject prefix such as `[Website]`; skip the empty `Firma:` line in the mail.
+- Accessibility: the open hamburger menu doesn't trap focus or lock scrolling (it covers the screen at ≤ 700px); the hero portrait has `alt=""`; the footer logo's label "Zurück zum Anfang der Seite" is wrong on the legal pages.
+- Small JS/PHP details: `navIndicator.js` lacks `"use strict"` and uses `pageYOffset` (use `scrollY`); the slider arrow hover `scale` sits outside `@media (hover: hover)`; `FALLBACK_MESSAGE` in `contact.js` duplicates the `fehler` message without the email address; the contact form's width cap (`#contact form`, 40rem) and the Dave overlap between 1000 and 1200px haven't been checked visually.

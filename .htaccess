@@ -5,11 +5,6 @@ LimitRequestBody 102400
 
 ErrorDocument 403 "Zugriff verweigert."
 
-# Project notes and the local development router are not part of the site
-<FilesMatch "^(CLAUDE\.md|dev-router\.php)$">
-    Require all denied
-</FilesMatch>
-
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
