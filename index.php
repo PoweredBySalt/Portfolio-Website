@@ -542,7 +542,7 @@ unset($form_config);
             </div>
             <input type="hidden" name="form_time" value="<?= $form_time ?>" />
             <input type="hidden" name="form_sig" value="<?= e($form_sig) ?>" />
-            <fieldset>
+            <div class="contact_end">
               <div>
                 <input type="checkbox" name="dse" value="1" id="contact-dse" required />
                 <label id="datenschutz" for="contact-dse">
@@ -556,7 +556,7 @@ unset($form_config);
                 <button class="button" type="submit">Senden</button>
                 <p class="required_note">* Pflichtfeld</p>
               </div>
-            </fieldset>
+            </div>
           </form>
         </div>
       </section>

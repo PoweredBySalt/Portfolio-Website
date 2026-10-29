@@ -21,7 +21,7 @@ There is no build step, package manager or test suite. Files are deployed as the
 | `impressum.php`, `datenschutz.php` | Legal pages (use `css/datenschutz.css`) |
 | `sent.php` | Confirmation page that `mailer.php` redirects to |
 | `includes/head.php` | Doctype and `<head>` for every page: meta, font preloads, CSS, scripts |
-| `includes/header.php`, `includes/footer.php` | Navigation and footer, included by every page |
+| `includes/header.php`, `includes/footer.php` | Navigation and footer (with the SiteLock badge, `.sitelock`), included by every page |
 | `includes/contact_messages.php` | Contact form error messages, shared by `mailer.php` and `index.php` |
 | `popup_information.json` | Data for the project popups (one entry per project tile) |
 | `mailer.php` | Contact form handler: validation, spam protection, PHPMailer over Strato SMTP |
@@ -88,7 +88,7 @@ require __DIR__ . "/includes/head.php";
   - For pink text or hovers on white use `--xrot_dunkel`. `--xrot` is decoration only.
 - **Layout grid:** every section's content sits in one centred container of at most 75rem (1200px).
   - Full-width sections use `padding-inline: var(--page_gutter)`; the header and footer logos use `left: var(--page_gutter)`.
-  - Two-column sections (hero, About) use `repeat(2, minmax(0, 1fr))` with `gap: var(--grid_gap)`, so their second columns line up.
+  - Two-column sections (hero, About, Contact) use `repeat(2, minmax(0, 1fr))` with `gap: var(--grid_gap)`, so their second columns line up.
   - New sections should do the same rather than adding their own `vw` paddings.
 - The stylesheet uses native CSS nesting.
 - The base rule `* { text-decoration: none; list-style: none; }` removes all link underlines and list bullets. Every link in running text needs an explicit underline (`.link`, or a rule like `#contact a`) so it isn't marked by colour alone.
@@ -110,7 +110,8 @@ require __DIR__ . "/includes/head.php";
   The section headings and the table of contents are in German.
 
   New rules go into the matching section. Media-query rules go into the existing breakpoint block, not next to the base rule. That keeps the cascade order (media rules after all base rules).
-- Breakpoints: 1440px (About stacks), 1200px, 1000px (desktop nav becomes the hamburger menu; the contact decoration image "Dave" is hidden from here down), 900px, 700px. **1200px is also hard-coded in `popup.js`** (`MOBILE_LAYOUT`), which switches the popup description to a toggle panel; keep the two in sync.
+- The footer's jagged top (`.border_footer::after`, `top: -5rem`) hangs above the footer; `.border_footer` needs an explicit `top: 0`, because without it the box starts below the footer's top padding (absolute positioning inside a flex container) and the edge moves down with any extra padding. The footer has `padding-top: 5rem` so the text keeps its distance from the edge.
+- Breakpoints: 1440px (About stacks), 1200px, 1000px (desktop nav becomes the hamburger menu; the contact section becomes one column from here down), 900px, 700px. **1200px is also hard-coded in `popup.js`** (`MOBILE_LAYOUT`), which switches the popup description to a toggle panel; keep the two in sync.
 - Keyboard focus uses `:focus-visible` (blue outline, white inside `nav` and `footer`). Text fields show focus with their blue border instead. Don't remove outlines without a replacement.
 - Only the font weights 500 and 900 of Inter exist in practice (body text renders as 500, bold as 900). Both are preloaded in `head.php`, and Quadrangle is preloaded on index only.
 - While the popup is open, `<html>` has the class `popup_open` (blocks scrolling). Safari < 16 falls back to pinning `body` with `position: fixed`.
@@ -118,6 +119,7 @@ require __DIR__ . "/includes/head.php";
 ## Contact form and mail
 
 - The only public email address is `contact@marwin-ritschel.de` (footer, Impressum, Datenschutz, mailer). Don't add others.
+- Layout: `#contact-form` is a two-column grid: intro (`.contact_intro`: heading, text, email and GitHub links with icons) on the left, the form on the right (one column from 1000px down). The consent checkbox, status message and send button sit in `.contact_end` (a plain `div`, not a `fieldset`, so screen readers don't announce an unnamed group); the "* Pflichtfeld" note sits next to the send button.
 - `index.php#contact` posts to `/mailer.php` with fields `name`, `nachname`, `firma` (optional), `email`, `betreff`, `nachricht`, the consent checkbox `dse=1`, plus the spam-protection fields `website` (hidden honeypot) and `form_time` (set to `time()` when the page renders).
 - `mailer.php` checks, in order:
   1. A filled honeypot pretends success.
@@ -135,12 +137,13 @@ require __DIR__ . "/includes/head.php";
   - `DirectoryIndex index.php`, `LimitRequestBody`, and blocking of a few bots. `CLAUDE.md`, `dev-router.php` and the other dev files are not uploaded to the server, so they need no block;
   - 301 redirects (`/index*` to `/`, `*.html` to extensionless), section URLs (`/kontakt` etc.) to `index.php`, and extensionless URLs to `.php`;
   - MIME types, caching (`mod_expires`), compression (`mod_deflate`) and security headers (`nosniff`, `Referrer-Policy`, `X-Frame-Options`, HSTS, `Permissions-Policy`, `Content-Security-Policy`).
-  - The CSP allows only own resources, no inline scripts, but inline `style` attributes. A new external source (font, script, embed) or an inline script needs a CSP change, or the browser blocks it. `dev-router.php` doesn't send these headers, so test the CSP on the live site (console).
+  - The CSP allows only own resources, plus the SiteLock badge image from `shield.sitelock.com` (footer), no inline scripts, but inline `style` attributes. A new external source (font, script, embed) or an inline script needs a CSP change, or the browser blocks it. `dev-router.php` doesn't send these headers, so test the CSP on the live site (console).
 
   There is no HTTP-to-HTTPS redirect in it; set that in the Strato panel.
 - `robots.txt`, `sitemap.xml`: SEO. The sitemap lists `/`, `/impressum`, `/datenschutz`. `/sent` is `noindex` and stays out of it.
 - `index.php` contains schema.org `Person` JSON-LD at the end of `<body>`; keep it in line with the visible content.
 - Home PC: `C:\website` has no `v11_archiv/`, no backup zips and no `config.php` (the contact form fails here), so the paths above that point to them don't exist at home.
+- Branches: `main` is what is deployed. The branch `magnetic-edges` (on GitHub) holds a generated, mouse-reactive version of the low-poly edges (`javascript/magneticEdges.js`, side and corner pieces, a redesigned About card) that isn't merged. Its `CLAUDE.md` documents it, so expect conflicts in `CLAUDE.md`, `style.css` and `index.php` when merging.
 - Backups: besides the git repository (home PC only), snapshots are zip files next to this folder (e.g. `../v11_backup_2026-10-29.zip`).
 
 ## Open issues
@@ -153,6 +156,7 @@ Found in a full review on 2026-10-29. Delete an item once it is fixed. Bugs and 
 - The "Portfolio Website" project says it was built "ohne Hilfe außenstehender Tools oder Hilfsmittel", but the site uses GSAP and PHPMailer, and the skills section lists Claude.
 
 **Cleanup and ideas**
+- `images/Dave_decoration.webp` (54 KB) is no longer used since the contact section lost its decoration image; per the rule above it belongs in `../v11_archiv/`.
 - Unused code: the tokens `--xrot`, `--ygrün`, `--darkgrey`, `--popup_height` and `--slider_width`; the selector `#projects h3`; the grid properties on the flex `div:nth-child(2)` of `.hamburgerMenu`; the `min-width`/`margin` of the base `.info` rule (always overridden); the ids `project-1`…`project-7`; the Inter 200 `@font-face` (never downloaded, harmless).
 - `robots.txt`: the empty `Disallow:`, `Allow: /` and `Disallow: /cgi-bin/` (no such folder) are redundant, and Google ignores `Crawl-delay`. `User-agent: *`, `Allow: /` and the `Sitemap` line are enough.
 - Replace inline styles with classes: the struck-through "musste" (use `<s>`), `sent.php`, the `|` in the header, the `#slider` width and the `style="z-index: 0"` on `.mobileLogo`.
@@ -161,5 +165,6 @@ Found in a full review on 2026-10-29. Delete an item once it is fixed. Bugs and 
 - There is no custom 404 page (Apache shows its default English one); `/impressum.php` also answers as a duplicate of `/impressum` (the canonical link covers it).
 - Videos have no `poster`, so a slide is blank until its video loads. The share image is WebP, which some link-preview crawlers don't support; a JPEG copy is safer.
 - Contact form ideas: split the generic `eingabe` error into specific messages (too long, expired form); let the signed `form_time` expire (e.g. after 24 h); rename the honeypot `website`, which browsers may autofill; add a character counter to the textarea; a fallback when SMTP fails so no message is lost; subject prefix such as `[Website]`; skip the empty `Firma:` line in the mail.
+- Contact form accessibility (reviewed 2026-10-29; no screen reader test): the light-grey field borders (`--grey` on white, ~1.4:1) are below the 3:1 of WCAG 1.4.11 (a `--darkgrey` border plus a focus outline fixes it; the owner reverted that for looks); errors aren't tied to a field (the generic `eingabe` message has no `aria-invalid`/`aria-describedby`); the blue left/bottom border is a small focus cue; the "* Pflichtfeld" note comes after the fields, WCAG 3.3.2 prefers it before (the `required` attributes already tell screen readers); the honeypot can still be focused with a mouse or script.
 - Accessibility: the open hamburger menu doesn't trap focus or lock scrolling (it covers the screen at ≤ 700px); the hero portrait has `alt=""`; the footer logo's label "Zurück zum Anfang der Seite" is wrong on the legal pages.
 - Small JS/PHP details: `navIndicator.js` lacks `"use strict"` and uses `pageYOffset` (use `scrollY`); the slider arrow hover `scale` sits outside `@media (hover: hover)`; `FALLBACK_MESSAGE` in `contact.js` duplicates the `fehler` message without the email address; the contact form's width cap (`#contact form`, 40rem) and the Dave overlap between 1000 and 1200px haven't been checked visually.
