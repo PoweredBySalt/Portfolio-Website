@@ -12,5 +12,12 @@
       <span>|</span>
       <a href="/datenschutz" class="link">Datenschutz</a>
     </div>
+    <a
+      class="sitelock"
+      href="https://www.sitelock.com/verify.php?site=marwin-ritschel.de"
+      target="_blank"
+      rel="noopener noreferrer"
+      ><img src="https://shield.sitelock.com/shield/marwin-ritschel.de" alt="SiteLock-Siegel"
+    /></a>
   </div>
 </footer>
