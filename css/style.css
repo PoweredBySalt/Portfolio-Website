@@ -1241,6 +1241,12 @@ footer {
     left: var(--page_gutter);
   }
 
+  /* The address in the heading keeps the heading's size and weight */
+  h4 .link {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
   .sitelock {
     position: static;
     height: auto;

@@ -32,10 +32,13 @@ The contact form needs an SMTP password and fails locally unless you provide one
 
 ```php
 <?php
-return ['smtp_password' => '...'];
+return [
+  'smtp_password' => '...',
+  'contact_address' => 'you@example.com', // SMTP login, sender and recipient
+];
 ```
 
-The same value also serves as the key for the signed form timestamp and the hashed IPs of the rate limit.
+The password also serves as the key for the signed form timestamp and the hashed IPs of the rate limit.
 
 Without this file, the form reports an error and logs `Kontaktformular: config.php fehlt`. Never put credentials inside the web root.
 
