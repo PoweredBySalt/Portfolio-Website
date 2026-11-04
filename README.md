@@ -4,9 +4,20 @@ Personal portfolio of Marwin Ritschel: designer, 3D artist and frontend develope
 
 The site is a one-page portfolio (start, about, projects, contact) plus two legal pages. It is written in plain PHP, CSS and vanilla JavaScript, with no build step, framework or package manager. The site content is in German.
 
+## How this was built
+
+The design, content, 3D work and most of the code are my own: roughly 80% of the codebase. I used [Claude Code](https://claude.com/claude-code) as an assistant for the rest, mainly:
+
+- **The interactive low-poly edges** (`javascript/magneticEdges.js`): written entirely by Claude Code. I came up with the concept and directed it: what the edges should look like and how they react, then tested and iterated on the result.
+- **The contact form hardening** in `mailer.php` (honeypot, signed timestamp, rate limit, validation), developed with Claude Code, plus reviews of accessibility and security.
+- **Documentation:** `CLAUDE.md` and parts of this README.
+
+I decide what gets built, test it in the browsers, and review and adjust the code before it is deployed.
+
 ## Features
 
 - **One page, real URLs:** the sections have their own paths (`/ueber-mich`, `/projekte`, `/kontakt`) that scroll to the section without a reload.
+- **Mouse-reactive edges:** the jagged section edges are generated anew on every page load, and their corners react to the cursor. Only fine pointers without reduced motion get this; everyone else sees static SVGs.
 - **Project popups:** each project tile opens a native `<dialog>` with a description, work steps, tools and a slider of images and videos. The content comes from `popup_information.json`.
 - **Contact form:** sent with `fetch` and PHPMailer over SMTP, with spam protection (honeypot, signed form timestamp, minimum fill time) and a per-IP rate limit. It works without JavaScript too.
 - **Accessible by default:** keyboard focus styles, labelled form fields, a focus-trapping dialog, `prefers-reduced-motion` respected by every animation.
@@ -72,7 +83,7 @@ The files are uploaded as they are to an Apache host (Strato). `CLAUDE.md`, `REA
 
 ## Branches
 
-`main` is the deployed version. The `magnetic-edges` branch holds an experiment with randomly generated low-poly edges whose corners react to the mouse. It is not merged.
+`main` is the deployed version, including the mouse-reactive edges. The `magnetic-edges` branch holds the original experiment with extra pieces (side and corner decorations and a redesigned About card) that are not merged.
 
 ## More documentation
 
