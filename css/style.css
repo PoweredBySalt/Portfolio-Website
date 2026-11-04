@@ -270,7 +270,8 @@ footer :focus-visible {
   -webkit-filter: drop-shadow(var(--shadow));
 
   &::before,
-  &::after {
+  &::after,
+  & > .magnetic_edge {
     background-size: contain;
     background-repeat: repeat-x;
     z-index: -1;
@@ -285,14 +286,22 @@ footer :focus-visible {
     height: 5rem;
   }
 
+  &::before,
+  & > .edge_before {
+    top: -4.9rem;
+  }
+
   &::before {
     background-image: url("../images/SVG/border/content_top.svg");
-    top: -4.9rem;
+  }
+
+  &::after,
+  & > .edge_after {
+    top: 99.9%;
   }
 
   &::after {
     background-image: url("../images/SVG/border/content_bottom.svg");
-    top: 99.9%;
   }
 }
 
@@ -305,7 +314,8 @@ footer :focus-visible {
   filter: drop-shadow(var(--shadow));
   -webkit-filter: drop-shadow(var(--shadow));
 
-  &::before {
+  &::before,
+  & > .magnetic_edge {
     background-image: url("../images/SVG/border/white_top.svg");
     background-size: contain;
     background-repeat: repeat-x;
@@ -321,6 +331,27 @@ footer :focus-visible {
     display: flex;
     height: 5rem;
   }
+}
+
+/* Magnetische Kanten (javascript/magneticEdges.js): ein Inline-SVG ersetzt
+   das Pseudoelement und wird von derselben Regel positioniert */
+.magnetic_edge {
+  pointer-events: none;
+  background-image: none !important;
+  /* Corners may reach past the box (DEPTH > 1, pull, click blast) */
+  overflow: visible !important;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+.has_edge_before::before,
+.has_edge_after::after {
+  display: none !important;
 }
 
 /* ==========================================================================
@@ -354,7 +385,8 @@ nav {
 
   background-color: var(--zblau);
 
-  &::after {
+  &::after,
+  & > .magnetic_edge {
     background-image: url("../images/SVG/border/header.svg");
     background-size: contain;
     background-position: bottom left;
@@ -542,6 +574,8 @@ nav {
     justify-content: center;
     grid-column-start: 2;
     grid-column-end: 3;
+    height: fit-content;
+    align-self: center;
   }
 }
 
@@ -572,7 +606,9 @@ nav {
     width: 100%;
   }
 
-  > div > div {
+  /* :where() hält die Spezifität niedrig; :last-child schließt .borders aus,
+     in das magneticEdges.js die Kanten-divs einsetzt */
+  > div:where(:last-child) > div {
     display: flex;
     column-gap: 2rem;
     padding: 6rem 0 0;
@@ -587,7 +623,7 @@ nav {
     }
   }
 
-  > div > div:last-child {
+  > div:where(:last-child) > div:last-child {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: flex-start;
@@ -938,8 +974,8 @@ textarea {
 
 .contact_submit {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 1.5rem;
 }
 
@@ -1241,6 +1277,12 @@ footer {
     left: var(--page_gutter);
   }
 
+  /* The address in the heading keeps the heading's size and weight */
+  h4 .link {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
   .sitelock {
     position: static;
     height: auto;
@@ -1280,7 +1322,8 @@ footer {
     filter: drop-shadow(var(--shadow));
     -webkit-filter: drop-shadow(var(--shadow));
 
-    &::after {
+    &::after,
+    & > .magnetic_edge {
       background-image: url("../images/SVG/border/footer.svg");
       background-size: contain;
       background-repeat: repeat-x;
@@ -1366,7 +1409,8 @@ footer {
 
     > a {
       align-items: center;
-      margin-bottom: 20vh;
+      align-self: flex-end;
+      margin-bottom: 15vh;
     }
 
     > img {
@@ -1500,7 +1544,7 @@ footer {
   }
 
   #about {
-    > div > div > div {
+    > div:where(:last-child) > div > div {
       grid-column: span 4;
     }
   }
@@ -1529,7 +1573,6 @@ footer {
   }
 
   .contact_submit {
-    flex-direction: column;
     align-items: stretch;
 
     .button {

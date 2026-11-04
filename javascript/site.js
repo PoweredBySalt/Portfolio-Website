@@ -7,12 +7,35 @@
   const openButton = document.getElementById("menu_open");
   const closeButton = document.getElementById("menu_close");
 
+  const mobileLayout = window.matchMedia("(max-width: 1000px)");
+
+  // Elemente, die beim Öffnen des Menüs inert gesetzt wurden
+  let inertOutside = [];
+
   function isMenuOpen() {
     return !menu.inert;
   }
 
+  // Bei offenem Menü ist alles außerhalb inert, damit der Fokus
+  // (Tab, Screenreader) nicht hinter das Overlay wandern kann.
+  function setOutsideInert(inert) {
+    if (!inert) {
+      inertOutside.forEach((element) => (element.inert = false));
+      inertOutside = [];
+      return;
+    }
+    for (let node = menu; node !== document.body; node = node.parentElement) {
+      [...node.parentElement.children].forEach((sibling) => {
+        if (sibling === node || sibling.inert) return;
+        sibling.inert = true;
+        inertOutside.push(sibling);
+      });
+    }
+  }
+
   function setMenuOpen(open) {
     menu.inert = !open;
+    setOutsideInert(open);
     openButton.setAttribute("aria-expanded", String(open));
     gsap.to(menu, {
       xPercent: open ? -100 : 0,
@@ -38,6 +61,10 @@
       .forEach((link) => link.addEventListener("click", () => closeMenu(false)));
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && isMenuOpen()) closeMenu(true);
+    });
+    // Über 1000px ist das Menü ausgeblendet; offen bliebe sonst die Seite inert
+    mobileLayout.addEventListener("change", () => {
+      if (!mobileLayout.matches && isMenuOpen()) closeMenu(false);
     });
   }
 

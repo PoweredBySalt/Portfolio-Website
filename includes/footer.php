@@ -1,11 +1,11 @@
 <footer id="footer">
   <div class="border_footer"></div>
-  <a aria-label="Zurück zum Anfang der Seite" href="/"
+  <a aria-label="Zur Startseite" href="/"
     ><img src="/images/logo.svg" alt=""
   /></a>
   <div>
     <h3>Marwin Ritschel</h3>
-    <h4>E-Mail: contact@marwin-ritschel.de</h4>
+    <h4 style="text-align: center;">E-Mail: <a class="link" href="mailto:contact@marwin-ritschel.de">contact@marwin-ritschel.de</a></h4>
     <p class="footermisc">© <?= date("Y") ?> Marwin Ritschel. Alle Rechte vorbehalten.</p>
     <div>
       <a href="/impressum" class="link">Impressum</a>

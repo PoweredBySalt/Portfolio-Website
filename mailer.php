@@ -7,8 +7,6 @@ require __DIR__ . '/PHPMailer/src/Exception.php';
 require __DIR__ . '/PHPMailer/src/PHPMailer.php';
 require __DIR__ . '/PHPMailer/src/SMTP.php';
 
-const CONTACT_ADDRESS = "contact@marwin-ritschel.de";
-
 // Spam protection
 const MIN_FILL_SECONDS = 3; // a form sent faster than this is from a bot
 const RATE_LIMIT_COUNT = 5; // messages per IP address ...
@@ -117,6 +115,12 @@ if (!is_array($config) || !is_string($config["smtp_password"] ?? null) || $confi
     error_log("Kontaktformular: smtp_password fehlt in config.php");
     finish("fehler", 500);
 }
+// Address the form logs in with, sends from and delivers to
+$contact_address = $config["contact_address"] ?? null;
+if (!is_string($contact_address) || filter_var($contact_address, FILTER_VALIDATE_EMAIL) === false) {
+    error_log("Kontaktformular: contact_address fehlt oder ist ungültig in config.php");
+    finish("fehler", 500);
+}
 
 // form_time is signed by index.php, so a bot can't fake an old timestamp
 $form_time = filter_var($_POST["form_time"] ?? "", FILTER_VALIDATE_INT);
@@ -169,12 +173,12 @@ try {
     $mail->Timeout = SMTP_TIMEOUT;
     $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
-    $mail->Username = CONTACT_ADDRESS;
+    $mail->Username = $contact_address;
     $mail->Password = $config["smtp_password"];
 
     $full_name = $values["name"] . " " . $values["nachname"];
-    $mail->setFrom(CONTACT_ADDRESS, "Kontaktaufnahme von: " . $full_name);
-    $mail->addAddress(CONTACT_ADDRESS, "Contact");
+    $mail->setFrom($contact_address, "Kontaktaufnahme von: " . $full_name);
+    $mail->addAddress($contact_address, "Contact");
     $mail->addReplyTo($values["email"], $full_name);
 
     $mail->Subject = $values["betreff"];

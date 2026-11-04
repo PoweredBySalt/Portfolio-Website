@@ -101,6 +101,7 @@ function asset($path)
     <!-- javascript -->
     <script defer src="<?= e(asset("/javascript/librarys/gsap.min.js")) ?>"></script>
     <script defer src="<?= e(asset("/javascript/site.js")) ?>"></script>
+    <script defer src="<?= e(asset("/javascript/magneticEdges.js")) ?>"></script>
 <?php foreach ($page_scripts as $script): ?>
     <script defer src="<?= e(asset($script)) ?>"></script>
 <?php endforeach; ?>

@@ -462,6 +462,12 @@ unset($form_config);
                 </svg>
                 <a href="https://github.com/PoweredBySalt" target="_blank" rel="noopener noreferrer">Mein GitHub-Profil</a>
               </li>
+              <li>
+                <svg aria-hidden="true" width="22" height="22" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"></path>
+                </svg>
+                <a href="https://www.linkedin.com/in/marwin-ritschel/" target="_blank" rel="noopener noreferrer">Mein LinkedIn-Profil</a>
+              </li>
             </ul>
           </div>
           <!-- maxlength values match FIELDS in mailer.php -->
@@ -553,8 +559,8 @@ unset($form_config);
               </div>
               <p id="contact-status" role="alert" tabindex="-1"><?= e($contact_message) ?></p>
               <div class="contact_submit">
-                <button class="button" type="submit">Senden</button>
                 <p class="required_note">* Pflichtfeld</p>
+                <button class="button" type="submit">Senden</button>
               </div>
             </div>
           </form>
@@ -570,7 +576,10 @@ unset($form_config);
         "url": "https://marwin-ritschel.de/",
         "image": "https://marwin-ritschel.de/images/auch_ich.webp",
         "email": "contact@marwin-ritschel.de",
-        "sameAs": ["https://github.com/PoweredBySalt"],
+        "sameAs": [
+          "https://github.com/PoweredBySalt",
+          "https://www.linkedin.com/in/marwin-ritschel/"
+        ],
         "jobTitle": ["Designer", "3D-Artist", "Frontend Developer"]
       }
     </script>

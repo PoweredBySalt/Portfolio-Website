@@ -219,7 +219,7 @@
   {
     "name": "Portfolio Website",
     "short_description": "Front- und Backend-Programmierung",
-    "description": "Mein Portfolio habe ich selbst programmiert ohne Hilfe außenstehender Tools oder Hilfsmittel. Ziel war es, eine Auswahl meiner Arbeiten zu präsentieren und einen guten ersten Eindruck zu hinterlassen.",
+    "description": "Mein Portfolio habe ich selbst gestaltet und programmiert, mit HTML, CSS, JavaScript und PHP, ohne Baukasten oder Framework. Für die Animationen nutze ich die Bibliothek GSAP, für das Kontaktformular PHPMailer. Claude hat mich bei Code-Review, Fehlerbehebung und Barrierefreiheit unterstützt. Ziel war es, eine Auswahl meiner Arbeiten zu präsentieren und einen guten ersten Eindruck zu hinterlassen.",
     "worksteps": [
       "Konzeptionierung",
       "HTML Grundgerüst schreiben",
@@ -256,6 +256,11 @@
         "programm_name": "PHP",
         "programm_description": "Kontaktformular",
         "programm_path": "/images/php.webp"
+      },
+      {
+        "programm_name": "Claude",
+        "programm_description": "Code-Review, Fehlerbehebung und Barrierefreiheit",
+        "programm_path": "/images/SVG/logos/Claude.svg"
       }
     ],
     "slider_images": [
