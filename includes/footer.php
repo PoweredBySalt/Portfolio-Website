@@ -5,7 +5,7 @@
   /></a>
   <div>
     <h3>Marwin Ritschel</h3>
-    <h4 style="text-align: center;">E-Mail: <a class="link" href="mailto:contact@marwin-ritschel.de">contact@marwin-ritschel.de</a></h4>
+    <h4>E-Mail: <a class="link" href="mailto:contact@marwin-ritschel.de">contact@marwin-ritschel.de</a></h4>
     <p class="footermisc">© <?= date("Y") ?> Marwin Ritschel. Alle Rechte vorbehalten.</p>
     <div>
       <a href="/impressum" class="link">Impressum</a>
