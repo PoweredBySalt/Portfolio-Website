@@ -447,7 +447,7 @@ unset($form_config);
             <h2>Kontakt</h2>
             <h3>Let's Talk!</h3>
             <p class="contact_text">
-              Brauchen Sie noch Unterstützung in Ihrem Unternehmen? Schreiben Sie mir über das Formular oder direkt per E-Mail.
+              Sie haben eine Stelle oder ein Praktikum zu vergeben oder möchten mich kennenlernen? Schreiben Sie mir über das Formular oder direkt per E-Mail.
             </p>
             <ul class="contact_links">
               <li>

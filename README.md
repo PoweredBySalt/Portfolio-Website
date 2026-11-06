@@ -67,6 +67,7 @@ Without this file, the form reports an error and logs `Kontaktformular: config.p
 | `images/`, `videos/`, `fonts/` | Web-ready assets |
 | `PHPMailer/` | Vendored PHPMailer, unmodified |
 | `.htaccess` | Rewrites, caching, compression and security headers (Apache) |
+| `robots.txt`, `sitemap.xml` | Search engine files |
 | `dev-router.php` | Router for local preview only |
 
 Every page sets a few variables (`$page_title`, `$page_path`, `$page_description`, …) and includes the shared parts. All CSS, JS and JSON URLs go through `asset()`, which adds the file's modification time as a version, so the server can cache them for a year.
@@ -83,7 +84,7 @@ The files are uploaded as they are to an Apache host (Strato). `CLAUDE.md`, `REA
 
 ## Branches
 
-`main` is the deployed version, including the mouse-reactive edges. The `magnetic-edges` branch holds the original experiment with extra pieces (side and corner decorations and a redesigned About card) that are not merged.
+`main` is the deployed version, including the mouse-reactive edges. The unmerged experiment with extra decorations (side and corner pieces, a redesigned About card) is not part of this repository.
 
 ## More documentation
 

@@ -1,2 +1,5 @@
 .vscode/
 .fiveserverrc.json
+
+# Private notes (not for GitHub, not for the server)
+AUTHORSHIP.md

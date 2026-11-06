@@ -14,6 +14,11 @@ require __DIR__ . "/includes/head.php";
         <h2>Kontakt</h2>
         <p>Marwin Ritschel</p>
         <p>E-Mail: contact@marwin-ritschel.de</p>
+        <h2>Hinweis</h2>
+        <p>
+          Diese Website ist ein privates, nicht kommerzielles Portfolio. Sie
+          enthält keine Werbung und bietet keine entgeltlichen Leistungen an.
+        </p>
         <p>
           Quelle:
           <a href="https://www.e-recht24.de">https://www.e-recht24.de</a>
