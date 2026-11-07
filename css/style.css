@@ -263,8 +263,11 @@ li {
     var(--button_cut) 100%,
     0 calc(100% - var(--button_cut))
   );
-  font: inherit;
+  /* feste Schrift statt inherit, sonst hängt die Größe vom Umfeld ab */
+  font-family: inherit;
+  font-size: 1rem;
   font-weight: 900;
+  line-height: 1.2;
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
@@ -329,14 +332,6 @@ li {
     background: var(--zblau);
     color: var(--white);
   }
-}
-
-/* In der Navigation (Leiste und Menü): kleiner und etwas größere Schrift */
-nav .button_primary {
-  --button_padding_y: 0.65em;
-  --button_padding_x: 1.4em;
-
-  font-size: 1.1rem;
 }
 
 /* Gleich breite Buttons in der Leiste */
