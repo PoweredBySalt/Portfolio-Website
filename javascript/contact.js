@@ -10,6 +10,12 @@
   const submitButton = form.querySelector('[type="submit"]');
   const buttonText = submitButton.textContent;
 
+  // The hover layer of the button shows a copy of the label (data-text).
+  function setLabel(text) {
+    submitButton.textContent = text;
+    submitButton.dataset.text = text;
+  }
+
   // Shows an error and moves focus to it, so keyboard and screen reader users
   // (and small screens, where it sits below the fold) notice it.
   function showError(message) {
@@ -20,7 +26,7 @@
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     submitButton.disabled = true;
-    submitButton.textContent = "Wird gesendet…";
+    setLabel("Wird gesendet…");
     status.textContent = "";
 
     try {
@@ -40,6 +46,6 @@
       showError(FALLBACK_MESSAGE);
     }
     submitButton.disabled = false;
-    submitButton.textContent = buttonText;
+    setLabel(buttonText);
   });
 })();

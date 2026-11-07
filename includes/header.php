@@ -28,10 +28,10 @@
             <button id="menu_close" aria-label="Menü schließen">
               <img src="/images/SVG/hamburgerExit.svg" alt="" />
             </button>
-            <a class="button" href="/">Start</a>
-            <a class="button" href="/ueber-mich">Über Mich</a>
-            <a class="button" href="/projekte">Projekte</a>
-            <a class="button" href="/kontakt">Kontakt</a>
+            <a class="button_primary" href="/" data-text="Start">Start</a>
+            <a class="button_primary" href="/ueber-mich" data-text="Über Mich">Über Mich</a>
+            <a class="button_primary" href="/projekte" data-text="Projekte">Projekte</a>
+            <a class="button_primary" href="/kontakt" data-text="Kontakt">Kontakt</a>
           </div>
         </div>
       </div>
@@ -40,10 +40,10 @@
       <a href="/" aria-label="Zur Startseite"
         ><img src="/images/logo.svg" alt=""
       /></a>
-      <a href="/" class="button">Start</a>
-      <a href="/ueber-mich" class="button">Über Mich</a>
-      <a href="/projekte" class="button">Projekte</a>
-      <a href="/kontakt" class="button">Kontakt</a>
+      <a href="/" class="button_primary" data-text="Start">Start</a>
+      <a href="/ueber-mich" class="button_primary" data-text="Über Mich">Über Mich</a>
+      <a href="/projekte" class="button_primary" data-text="Projekte">Projekte</a>
+      <a href="/kontakt" class="button_primary" data-text="Kontakt">Kontakt</a>
     </div>
   </nav>
 </header>

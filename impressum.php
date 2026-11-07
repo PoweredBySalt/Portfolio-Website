@@ -19,10 +19,6 @@ require __DIR__ . "/includes/head.php";
           Diese Website ist ein privates, nicht kommerzielles Portfolio. Sie
           enthält keine Werbung und bietet keine entgeltlichen Leistungen an.
         </p>
-        <p>
-          Quelle:
-          <a href="https://www.e-recht24.de">https://www.e-recht24.de</a>
-        </p>
       </section>
     </main>
     <?php require __DIR__ . "/includes/footer.php"; ?>

@@ -10,7 +10,7 @@ require __DIR__ . "/includes/head.php";
     <main>
       <section style="padding: 20vh 10vw">
         <h1 style="margin-bottom: 4rem">Danke für Ihre Nachricht</h1>
-        <a href="/" class="button">Zurück zur Startseite</a>
+        <a href="/" class="button_primary" data-text="Zurück zur Startseite">Zurück zur Startseite</a>
       </section>
     </main>
     <?php require __DIR__ . "/includes/footer.php"; ?>

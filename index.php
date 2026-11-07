@@ -15,6 +15,18 @@ $page_scripts = [
 $page_fonts = ["/fonts/Quadrangle-Regular.woff2"];
 require __DIR__ . "/includes/head.php";
 
+// CV download in the About card. The size shown next to the button is read
+// from the file, so it stays right when the PDF is replaced.
+$cv_path = "/dokumente/Lebenslauf_website.pdf";
+$cv_bytes = @filesize(__DIR__ . $cv_path);
+$cv_size = "";
+if ($cv_bytes) {
+  $cv_size =
+    $cv_bytes >= 1048576
+      ? number_format($cv_bytes / 1048576, 1, ",", ".") . " MB"
+      : max(1, round($cv_bytes / 1024)) . " KB";
+}
+
 // Status after a form post without JavaScript (see mailer.php)
 $contact_messages = require __DIR__ . "/includes/contact_messages.php";
 $contact_status = $_GET["formular"] ?? "";
@@ -79,7 +91,8 @@ unset($form_config);
           </div>
           <button
             id="toggle_description"
-            class="button"
+            class="button_secondary"
+            data-text="Infos"
             aria-controls="project_description"
             aria-expanded="false"
           >
@@ -96,35 +109,41 @@ unset($form_config);
           width="1174"
           height="1271"
         />
-        <a href="/ueber-mich">
-          <div class="splitter_anim">
-            <h1 class="splitterObject">
-              <span>Marwin <br />Ritschel</span>
-              <span>
-                <span>Designer</span>
-                <span aria-hidden="true">–</span>
-                <span>3D-Artist</span>
-                <span aria-hidden="true">–</span>
-                <span>Frontend Developer</span>
-              </span>
-            </h1>
-            <img
-              src="/images/SVG/splitter/splitter_01.svg"
-              alt=""
-              class="splitter1"
-            />
-            <img
-              src="/images/SVG/splitter/splitter_02.svg"
-              alt=""
-              class="splitter2"
-            />
-            <img
-              src="/images/SVG/splitter/splitter_03.svg"
-              alt=""
-              class="splitter3"
-            />
+        <div class="hero_text">
+          <a href="/ueber-mich">
+            <div class="splitter_anim">
+              <h1 class="splitterObject">
+                <span>Marwin <br />Ritschel</span>
+                <span>
+                  <span>Designer</span>
+                  <span aria-hidden="true">–</span>
+                  <span>3D-Artist</span>
+                  <span aria-hidden="true">–</span>
+                  <span>Frontend Developer</span>
+                </span>
+              </h1>
+              <img
+                src="/images/SVG/splitter/splitter_01.svg"
+                alt=""
+                class="splitter1"
+              />
+              <img
+                src="/images/SVG/splitter/splitter_02.svg"
+                alt=""
+                class="splitter2"
+              />
+              <img
+                src="/images/SVG/splitter/splitter_03.svg"
+                alt=""
+                class="splitter3"
+              />
+            </div>
+          </a>
+          <div class="hero_actions">
+            <a class="button_secondary" href="/kontakt" data-text="Kontakt aufnehmen">Kontakt aufnehmen</a>
+            <a class="button_tertiary" href="/projekte" data-text="Projekte ansehen">Projekte ansehen</a>
           </div>
-        </a>
+        </div>
       </section>
       <section id="about" data-path="/ueber-mich">
         <div class="borders"></div>
@@ -158,6 +177,18 @@ unset($form_config);
                   durfte,</span
                 >
                 sondern auch sein Interesse fürs Programmieren entdecken konnte.
+              </p>
+              <p class="download">
+                <a
+                  class="button_secondary"
+                  href="<?= $cv_path ?>"
+                  download="Marwin_Ritschel_Lebenslauf.pdf"
+                  data-text="Lebenslauf herunterladen"
+                  >Lebenslauf herunterladen</a
+                >
+                <?php if ($cv_size): ?>
+                  <span class="file_info">PDF, <?= $cv_size ?></span>
+                <?php endif; ?>
               </p>
             </div>
           </div>
@@ -560,7 +591,7 @@ unset($form_config);
               <p id="contact-status" role="alert" tabindex="-1"><?= e($contact_message) ?></p>
               <div class="contact_submit">
                 <p class="required_note">* Pflichtfeld</p>
-                <button class="button" type="submit">Senden</button>
+                <button class="button_secondary" type="submit" data-text="Senden">Senden</button>
               </div>
             </div>
           </form>

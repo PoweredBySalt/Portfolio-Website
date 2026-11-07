@@ -1,29 +1,28 @@
 (() => {
-  const SLIDE_EASE = "power2.out";
-  const SLIDE_MIN = 0.35;
-  const SLIDE_MAX = 0.7;
-  const SLIDE_PER_PX = 1 / 1200;
   const SCROLL_OFFSET = 400;
   const LOCK_IDLE_MS = 200;
 
   function init() {
-    const desktopNav = document.querySelector(".hideOnMobile");
-    if (!desktopNav) return;
-
-    const desktopLinks = [...desktopNav.querySelectorAll("a.button")];
-    const menuLinks = [...document.querySelectorAll(".hamburgerMenu a.button")];
+    const links = [
+      ...document.querySelectorAll(
+        ".hideOnMobile a.button_primary, .hamburgerMenu a.button_primary",
+      ),
+    ];
     const sections = [...document.querySelectorAll("main section[id]")];
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    const indicator = document.createElement("span");
-    indicator.className = "nav_indicator";
-    indicator.setAttribute("aria-hidden", "true");
-    desktopNav.appendChild(indicator);
+    if (!links.length || !sections.length) return;
 
     let currentId;
-    let shownLink = null;
-    let lockedLink = null;
+    let markedId = null;
+    let lockedId = null;
     let lockTimer;
+
+    const order = (id) => sections.findIndex((s) => s.id === id);
+
+    // While a button is fully filled or empty, moving the anchor of its fill
+    // is invisible, so it can be set right before the change starts.
+    function setFillSide(link, side) {
+      link.style.setProperty("--fill_from", side);
+    }
 
     function idFromLink(link) {
       const url = new URL(link.href);
@@ -33,118 +32,42 @@
       return section ? section.id : null;
     }
 
-    function linkFor(id) {
-      return desktopLinks.find((link) => id && idFromLink(link) === id) || null;
-    }
-
-    function getTextBounds(link) {
-      const range = document.createRange();
-      range.selectNodeContents(link);
-      const rects = [...range.getClientRects()].filter((r) => r.width > 0);
-      if (!rects.length) return null;
-      return {
-        left: Math.min(...rects.map((r) => r.left)),
-        right: Math.max(...rects.map((r) => r.right)),
-      };
-    }
-
-    function fitMenuUnderline(link) {
-      const bounds = getTextBounds(link);
-      if (!bounds) return;
-      const linkRect = link.getBoundingClientRect();
-      link.style.setProperty(
-        "--underline-left",
-        `${bounds.left - linkRect.left - link.clientLeft}px`,
-      );
-      link.style.setProperty(
-        "--underline-width",
-        `${bounds.right - bounds.left}px`,
-      );
-    }
-
-    function measure(link) {
-      if (!desktopNav.getClientRects().length) return null;
-      const bounds = getTextBounds(link);
-      if (!bounds) return null;
-
-      const navRect = desktopNav.getBoundingClientRect();
-      const linkRect = link.getBoundingClientRect();
-      const style = getComputedStyle(link);
-      const fontSize = parseFloat(style.fontSize);
-      const borderBottom = parseFloat(style.borderBottomWidth);
-
-      const thickness = fontSize * 0.2;
-      const bottomEdge =
-        linkRect.bottom - borderBottom + fontSize * 0.3 - navRect.top;
-
-      return {
-        x: bounds.left - navRect.left - desktopNav.clientLeft,
-        width: bounds.right - bounds.left,
-        top: bottomEdge - thickness - desktopNav.clientTop,
-        thickness,
-      };
-    }
-
-    function showIndicator(link, instant = false) {
-      shownLink = link;
-      const target = link ? measure(link) : null;
-      if (!target) {
-        indicator.classList.remove("visible");
-        return;
-      }
-
-      gsap.set(indicator, { top: target.top, height: target.thickness });
-
-      const snap =
-        instant ||
-        reduceMotion.matches ||
-        !indicator.classList.contains("visible");
-
-      if (snap) {
-        gsap.killTweensOf(indicator);
-        gsap.set(indicator, { x: target.x, width: target.width });
-      } else {
-        const distance = Math.abs(target.x - gsap.getProperty(indicator, "x"));
-        gsap.to(indicator, {
-          x: target.x,
-          width: target.width,
-          ease: SLIDE_EASE,
-          duration: gsap.utils.clamp(
-            SLIDE_MIN,
-            SLIDE_MAX,
-            SLIDE_MIN + distance * SLIDE_PER_PX,
-          ),
-          overwrite: true,
-        });
-      }
-      indicator.classList.add("visible");
-    }
-
-    function follow(link) {
-      desktopLinks.forEach((l) => l.classList.toggle("active", l === link));
-      if (link !== shownLink) showIndicator(link);
+    // The link of the current section gets .active, which shows the button
+    // filled (the same look as its hover state). The fill travels in the
+    // scroll direction: going down, the old button empties to the right and
+    // the new one fills from the left; going up, the other way round.
+    function mark(id) {
+      if (id === markedId) return;
+      const down = order(id) > order(markedId);
+      links.forEach((link) => {
+        const linkId = idFromLink(link);
+        if (id && linkId === id) setFillSide(link, down ? "left" : "right");
+        else if (markedId && linkId === markedId)
+          setFillSide(link, down ? "right" : "left");
+        link.classList.toggle("active", Boolean(id && linkId === id));
+      });
+      markedId = id;
     }
 
     function update() {
-      const scrollY = window.pageYOffset + SCROLL_OFFSET;
+      const scrollY = window.scrollY + SCROLL_OFFSET;
       const section = sections.find(
         (s) => scrollY >= s.offsetTop && scrollY < s.offsetTop + s.offsetHeight,
       );
       const id = section ? section.id : null;
       if (id === currentId) return;
       currentId = id;
-
-      menuLinks.forEach((link) =>
-        link.classList.toggle("active", Boolean(id && idFromLink(link) === id)),
-      );
-      if (!lockedLink) follow(linkFor(id));
+      if (!lockedId) mark(id);
     }
 
+    // After a click the clicked link stays marked until the smooth scroll
+    // has settled (or the visitor scrolls by hand), so the mark doesn't
+    // flicker through the sections in between.
     function releaseLock() {
       clearTimeout(lockTimer);
-      if (!lockedLink) return;
-      lockedLink = null;
-      follow(linkFor(currentId));
+      if (!lockedId) return;
+      lockedId = null;
+      mark(currentId);
     }
 
     function armLock() {
@@ -152,18 +75,18 @@
       lockTimer = setTimeout(releaseLock, LOCK_IDLE_MS);
     }
 
-    function refresh() {
-      menuLinks.forEach(fitMenuUnderline);
-      if (shownLink) showIndicator(shownLink, true);
-    }
-
-    desktopLinks.forEach((link) =>
+    links.forEach((link) => {
       link.addEventListener("click", () => {
-        lockedLink = link;
-        follow(link);
+        lockedId = idFromLink(link);
+        mark(lockedId);
         armLock();
-      }),
-    );
+      });
+      // A plain hover always fills from the left again (only while the
+      // button is empty, so a running fill doesn't jump).
+      link.addEventListener("pointerenter", () => {
+        if (!link.classList.contains("active")) setFillSide(link, "left");
+      });
+    });
     ["wheel", "touchstart"].forEach((type) =>
       window.addEventListener(type, releaseLock, { passive: true }),
     );
@@ -171,15 +94,12 @@
       "scroll",
       () => {
         update();
-        if (lockedLink) armLock();
+        if (lockedId) armLock();
       },
       { passive: true },
     );
-    window.addEventListener("resize", refresh);
-    document.fonts.ready.then(refresh);
 
     update();
-    refresh();
   }
 
   init();

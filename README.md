@@ -10,7 +10,7 @@ The design, content, 3D work and most of the code are my own: roughly 80% of the
 
 - **The interactive low-poly edges** (`javascript/magneticEdges.js`): written entirely by Claude Code. I came up with the concept and directed it: what the edges should look like and how they react, then tested and iterated on the result.
 - **The contact form hardening** in `mailer.php` (honeypot, signed timestamp, rate limit, validation), developed with Claude Code, plus reviews of accessibility and security.
-- **Documentation:** `CLAUDE.md` and parts of this README.
+- **Documentation:** the internal developer notes and parts of this README.
 
 I decide what gets built, test it in the browsers, and review and adjust the code before it is deployed.
 
@@ -74,7 +74,7 @@ Every page sets a few variables (`$page_title`, `$page_path`, `$page_description
 
 ## Deployment
 
-The files are uploaded as they are to an Apache host (Strato). `CLAUDE.md`, `README.md` and `dev-router.php` are not uploaded. HTTPS redirection is set in the hosting panel, not in `.htaccess`.
+The site files are uploaded as they are to an Apache host (Strato). Development files (`README.md`, `dev-router.php`, `setup-git.ps1`, `hooks/`, the git settings and the private notes) are not uploaded, and `.htaccess` denies direct requests to them as a safeguard. HTTPS redirection is set in the hosting panel, not in `.htaccess`.
 
 ## Adding a project
 
@@ -85,10 +85,6 @@ The files are uploaded as they are to an Apache host (Strato). `CLAUDE.md`, `REA
 ## Branches
 
 `main` is the deployed version, including the mouse-reactive edges. The unmerged experiment with extra decorations (side and corner pieces, a redesigned About card) is not part of this repository.
-
-## More documentation
-
-`CLAUDE.md` describes the code in detail (scripts, styling rules, the contact form checks, known open issues). It is written as instructions for the Claude Code assistant, but it also works as developer documentation.
 
 ## License
 

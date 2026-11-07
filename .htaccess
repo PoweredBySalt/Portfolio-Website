@@ -5,12 +5,21 @@ LimitRequestBody 102400
 
 ErrorDocument 403 "Zugriff verweigert."
 
+# Development files are never public. They aren't uploaded either; this is a
+# safeguard in case one is uploaded by mistake.
+<FilesMatch "^(\.git.*|.*\.(md|ps1)|dev-router\.php|config\.php|pre-push)$">
+    Require all denied
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
     # Block some spam bots and aggressive crawlers
     RewriteCond %{HTTP_USER_AGENT} (libwww-perl|MJ12bot|AhrefsBot) [NC]
     RewriteRule ^ - [F,L]
+
+    # Folders that are never public (see the FilesMatch block at the top)
+    RewriteRule ^(\.git|\.vscode|hooks)(/|$) - [F,L]
 
     # /index, /index.php and /index.html are the start page
     RewriteCond %{THE_REQUEST} \s/+index(\.php|\.html)?[\s?] [NC]
@@ -35,6 +44,7 @@ AddType font/woff .woff
 AddType image/webp .webp
 AddType video/webm .webm
 AddType application/json .json
+AddType application/pdf .pdf
 
 # Caching. CSS, JS and popup_information.json get ?v=<modification time> from
 # includes/head.php, so a changed file gets a new URL and can be cached long.
@@ -69,4 +79,8 @@ AddType application/json .json
     # New external sources (fonts, scripts, embeds) must be added here.
     Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://shield.sitelock.com; media-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    # Keep the CV (dokumente/*.pdf) out of search results
+    <FilesMatch "\.pdf$">
+        Header set X-Robots-Tag "noindex"
+    </FilesMatch>
 </IfModule>
